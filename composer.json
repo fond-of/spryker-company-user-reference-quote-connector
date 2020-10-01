@@ -1,0 +1,39 @@
+{
+  "name": "fond-of-spryker/company-user-reference-quote-connector",
+  "description": "Company user reference quote connector",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Daniel Rose",
+      "email": "daniel-rose@gmx.de"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "spryker/quote": "^2.0.0",
+    "fond-of-spryker/company-user-reference": "dev-master"
+  },
+  "require-dev": {
+    "fond-of-codeception/spryker": "dev-master as 1.0.0",
+    "spryker/code-sniffer": "^0.12",
+    "codeception/codeception": "^2.4",
+    "codeception/mockery-module": "^0.2",
+    "mikey179/vfsstream": "^1.6",
+    "phpro/grumphp": "^0.14",
+    "sebastian/phpcpd": "^4.0",
+    "php-coveralls/php-coveralls": "^2.1"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "FondOfSpryker\\": "src/FondOfSpryker/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FondOfSpryker\\": "tests/FondOfSpryker/",
+      "Generated\\": "src/Generated/"
+    }
+  }
+}
