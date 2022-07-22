@@ -4,6 +4,8 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReader;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReaderInterface;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteWriter;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteWriterInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\CompanyUserReferenceQuoteConnectorDependencyProvider;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
@@ -21,6 +23,17 @@ class CompanyUserReferenceQuoteConnectorBusinessFactory extends AbstractBusiness
         return new QuoteReader(
             $this->getRepository(),
             $this->getQuoteFacade()
+        );
+    }
+
+    /**
+     * @return \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteWriterInterface
+     */
+    public function createQuoteWriter(): QuoteWriterInterface
+    {
+        return new QuoteWriter(
+            $this->getQuoteFacade(),
+            $this->createQuoteReader()
         );
     }
 
