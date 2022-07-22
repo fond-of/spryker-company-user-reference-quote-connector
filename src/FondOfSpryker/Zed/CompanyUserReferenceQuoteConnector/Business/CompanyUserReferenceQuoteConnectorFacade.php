@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
 use Generated\Shared\Transfer\CompanyUserReferenceCollectionTransfer;
+use Generated\Shared\Transfer\CompanyUserResponseTransfer;
 use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
