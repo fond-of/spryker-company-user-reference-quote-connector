@@ -5,8 +5,10 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model;
 use \Exception;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface;
 use Generated\Shared\Transfer\CompanyUserReferenceCollectionTransfer;
+use Generated\Shared\Transfer\CompanyUserResponseTransfer;
 use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\CustomerTransfer;
+use Generated\Shared\Transfer\QuoteResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Customer\Business\Customer\Customer;
 
@@ -22,6 +24,11 @@ class QuoteWriter implements QuoteWriterInterface
      */
     protected $quoteReader;
 
+    /**
+     * @param CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface $quoteFacade
+     *
+     * @param QuoteReaderInterface $quoteReader
+     */
     public function __construct(
         CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface $quoteFacade,
         QuoteReaderInterface $quoteReader
@@ -33,11 +40,11 @@ class QuoteWriter implements QuoteWriterInterface
     /**
      * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
      *
-     * @return void
+     * @return Generated\Shared\Transfer\CompanyUserResponseTransfer
      *
      * @throws Exception
      */
-    public function deleteCompanyUserQuotes(CompanyUserTransfer $companyUserTransfer): void
+    public function deleteCompanyUserQuotes(CompanyUserTransfer $companyUserTransfer): CompanyUserResponseTransfer
     {
         $companyUserReferenceCollection = (new CompanyUserReferenceCollectionTransfer())
             ->addCompanyUserReference($companyUserTransfer->getCompanyUserReference());
@@ -51,16 +58,19 @@ class QuoteWriter implements QuoteWriterInterface
             $this->deleteQuote($quoteTransfer);
         }
 
+        return (new CompanyUserResponseTransfer())
+            ->setIsSuccessful(true)
+            ->setCompanyUser($companyUserTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer $quoteTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\QuoteResponseTransfer
      *
      * @throws Exception
      */
-    protected function deleteQuote(QuoteTransfer $quoteTransfer): void
+    protected function deleteQuote(QuoteTransfer $quoteTransfer): QuoteResponseTransfer
     {
         if ($quoteTransfer->getCustomer() === null) {
             $customer = (new CustomerTransfer())
@@ -75,6 +85,8 @@ class QuoteWriter implements QuoteWriterInterface
         if ($quoteResponseTransfer->getIsSuccessful() === false) {
             throw new Exception("Quote could not be deleted.");
         }
+
+        return $quoteResponseTransfer;
     }
 
 }

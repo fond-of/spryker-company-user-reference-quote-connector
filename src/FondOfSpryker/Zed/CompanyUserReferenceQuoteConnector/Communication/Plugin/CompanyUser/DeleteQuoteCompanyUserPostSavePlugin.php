@@ -18,6 +18,6 @@ class DeleteQuoteCompanyUserPostSavePlugin extends AbstractPlugin implements Com
      */
     public function postSave(CompanyUserResponseTransfer $companyUserResponseTransfer): CompanyUserResponseTransfer
     {
-        return $companyUserResponseTransfer;
+        return $this->getFacade()->deleteCompanyUserQuotes($companyUserResponseTransfer->getCompanyUser());
     }
 }

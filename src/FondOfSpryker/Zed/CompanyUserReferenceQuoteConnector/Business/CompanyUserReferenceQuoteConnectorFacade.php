@@ -28,9 +28,10 @@ class CompanyUserReferenceQuoteConnectorFacade extends AbstractFacade implements
 
     /**
      * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
-     * @return void
+     *
+     * @return Generated\Shared\Transfer\CompanyUserResponseTransfer
      */
-    public function deleteCompanyUserQuotes(CompanyUserTransfer $companyUserTransfer): void
+    public function deleteCompanyUserQuotes(CompanyUserTransfer $companyUserTransfer): CompanyUserResponseTransfer
     {
         $this->getFactory()
             ->createQuoteWriter()
