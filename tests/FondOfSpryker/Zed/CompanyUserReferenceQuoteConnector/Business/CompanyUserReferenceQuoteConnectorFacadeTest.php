@@ -4,7 +4,10 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReaderInterface;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteWriterInterface;
 use Generated\Shared\Transfer\CompanyUserReferenceCollectionTransfer;
+use Generated\Shared\Transfer\CompanyUserResponseTransfer;
+use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 
 class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
@@ -15,9 +18,19 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
     protected $companyUserReferenceQuoteConnectorBusinessFactoryMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|CompanyUserTransfer
+     */
+    protected $companyUserTransferMock;
+
+    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReaderInterface
      */
     protected $quoteReaderMock;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteWriterInterface
+     */
+    protected $quoteWriterMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\QuoteCollectionTransfer
@@ -35,6 +48,11 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
     protected $companyUserReferenceQuoteConnectorFacade;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\CompanyUserResponseTransfer
+     */
+    protected $companyUserResponseTransferMock;
+
+    /**
      * @return void
      */
     protected function _before(): void
@@ -45,7 +63,15 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->companyUserTransferMock = $this->getMockBuilder(CompanyUserTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->quoteReaderMock = $this->getMockBuilder(QuoteReaderInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->quoteWriterMock = $this->getMockBuilder(QuoteWriterInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -54,6 +80,10 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
             ->getMock();
 
         $this->companyUserReferenceCollectionTransferMock = $this->getMockBuilder(CompanyUserReferenceCollectionTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->companyUserResponseTransferMock = $this->getMockBuilder(CompanyUserResponseTransfer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -84,4 +114,28 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
             )
         );
     }
+
+    /**
+     * @return void
+     */
+    public function testDeleteCompanyUserQuotes(): void
+    {
+        $this->companyUserReferenceQuoteConnectorBusinessFactoryMock->expects(self::atLeastOnce())
+            ->method('createQuoteWriter')
+            ->willReturn($this->quoteWriterMock);
+
+        $this->quoteWriterMock->expects(self::atLeastOnce())
+            ->method('deleteCompanyUserQuotes')
+            ->with($this->companyUserTransferMock)
+            ->willReturn($this->companyUserResponseTransferMock);
+
+        self::assertInstanceOf(
+            CompanyUserResponseTransfer::class,
+            $this->companyUserReferenceQuoteConnectorFacade->deleteCompanyUserQuotes(
+                $this->companyUserTransferMock
+            )
+        );
+    }
+
+
 }

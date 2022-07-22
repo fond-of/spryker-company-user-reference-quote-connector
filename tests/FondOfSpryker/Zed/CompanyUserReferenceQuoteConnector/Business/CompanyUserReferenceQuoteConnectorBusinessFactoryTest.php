@@ -4,6 +4,8 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReader;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteWriter;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteWriterInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\CompanyUserReferenceQuoteConnectorDependencyProvider;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Persistence\CompanyUserReferenceQuoteConnectorRepository;
@@ -72,5 +74,24 @@ class CompanyUserReferenceQuoteConnectorBusinessFactoryTest extends Unit
         $quoteReader = $this->companyUserReferenceQuoteConnectorBusinessFactory->createQuoteReader();
 
         self::assertInstanceOf(QuoteReader::class, $quoteReader);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateQuoteWriter(): void
+    {
+        $this->containerMock->expects(self::atLeastOnce())
+            ->method('has')
+            ->willReturn(true);
+
+        $this->containerMock->expects(self::atLeastOnce())
+            ->method('get')
+            ->with(CompanyUserReferenceQuoteConnectorDependencyProvider::FACADE_QUOTE)
+            ->willReturn($this->quoteFacadeMock);
+
+        $quoteWriter = $this->companyUserReferenceQuoteConnectorBusinessFactory->createQuoteWriter();
+
+        self::assertInstanceOf(QuoteWriterInterface::class, $quoteWriter);
     }
 }

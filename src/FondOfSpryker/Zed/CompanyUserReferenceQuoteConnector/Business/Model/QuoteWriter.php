@@ -50,17 +50,19 @@ class QuoteWriter implements QuoteWriterInterface
             ->addCompanyUserReference($companyUserTransfer->getCompanyUserReference());
         $quoteCollectionTransfer = $this->quoteReader->findQuotesByCompanyUserReferences($companyUserReferenceCollection);
 
+        $companyUserResponseTransfer = (new CompanyUserResponseTransfer())
+            ->setIsSuccessful(true)
+            ->setCompanyUser($companyUserTransfer);
+
         if (count($quoteCollectionTransfer->getQuotes()) === 0) {
-            return;
+            return $companyUserResponseTransfer;
         }
 
         foreach ($quoteCollectionTransfer->getQuotes() as $quoteTransfer) {
-            $this->deleteQuote($quoteTransfer);
+           $quoteResponseTransfer = $this->deleteQuote($quoteTransfer);
         }
 
-        return (new CompanyUserResponseTransfer())
-            ->setIsSuccessful(true)
-            ->setCompanyUser($companyUserTransfer);
+        return $companyUserResponseTransfer;
     }
 
     /**
