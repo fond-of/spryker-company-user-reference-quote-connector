@@ -9,7 +9,14 @@ use Spryker\Zed\Kernel\Container;
 
 class CompanyUserReferenceQuoteConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const PROPEL_QUERY_QUOTE = 'PROPEL_QUERY_QUOTE';
+
+    /**
+     * @var string
+     */
     public const FACADE_QUOTE = 'FACADE_QUOTE';
 
     /**
@@ -63,7 +70,7 @@ class CompanyUserReferenceQuoteConnectorDependencyProvider extends AbstractBundl
     {
         $container[static::FACADE_QUOTE] = static function (Container $container) {
             return new CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge(
-                $container->getLocator()->quote()->facade()
+                $container->getLocator()->quote()->facade(),
             );
         };
 

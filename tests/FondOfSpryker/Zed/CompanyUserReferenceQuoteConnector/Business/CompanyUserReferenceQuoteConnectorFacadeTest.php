@@ -10,7 +10,7 @@ use Generated\Shared\Transfer\QuoteCollectionTransfer;
 class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|CompanyUserReferenceQuoteConnectorBusinessFactory
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\CompanyUserReferenceQuoteConnectorBusinessFactory
      */
     protected $companyUserReferenceQuoteConnectorBusinessFactoryMock;
 
@@ -59,7 +59,7 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
 
         $this->companyUserReferenceQuoteConnectorFacade = new CompanyUserReferenceQuoteConnectorFacade();
         $this->companyUserReferenceQuoteConnectorFacade->setFactory(
-            $this->companyUserReferenceQuoteConnectorBusinessFactoryMock
+            $this->companyUserReferenceQuoteConnectorBusinessFactoryMock,
         );
     }
 
@@ -80,8 +80,8 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
         self::assertEquals(
             $this->quoteCollectionTransferMock,
             $this->companyUserReferenceQuoteConnectorFacade->findQuotesByCompanyUserReferences(
-                $this->companyUserReferenceCollectionTransferMock
-            )
+                $this->companyUserReferenceCollectionTransferMock,
+            ),
         );
     }
 }

@@ -32,12 +32,12 @@ class QuoteReaderTest extends Unit
     protected $companyUserReferenceCollectionTransferMock;
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected $companyUserReferences;
 
     /**
-     * @var int[]
+     * @var array<int>
      */
     protected $quoteIds;
 
@@ -74,7 +74,7 @@ class QuoteReaderTest extends Unit
 
         $this->quoteReader = new QuoteReader(
             $this->companyUserReferenceQuoteConnectorRepositoryMock,
-            $this->quoteFacadeMock
+            $this->quoteFacadeMock,
         );
     }
 
@@ -99,16 +99,16 @@ class QuoteReaderTest extends Unit
             ->with(
                 self::callback(static function (QuoteCriteriaFilterTransfer $quoteCriteriaFilterTransfer) use ($self) {
                     return $self->quoteIds === $quoteCriteriaFilterTransfer->getQuoteIds();
-                })
+                }),
             )->willReturn($this->quoteCollectionTransferMock);
 
         $quoteCollectionTransfer = $this->quoteReader->findQuotesByCompanyUserReferences(
-            $this->companyUserReferenceCollectionTransferMock
+            $this->companyUserReferenceCollectionTransferMock,
         );
 
         self::assertEquals(
             $this->quoteCollectionTransferMock,
-            $quoteCollectionTransfer
+            $quoteCollectionTransfer,
         );
     }
 
@@ -127,7 +127,7 @@ class QuoteReaderTest extends Unit
             ->willReturn([]);
 
         $quoteCollectionTransfer = $this->quoteReader->findQuotesByCompanyUserReferences(
-            $this->companyUserReferenceCollectionTransferMock
+            $this->companyUserReferenceCollectionTransferMock,
         );
 
         self::assertCount(0, $quoteCollectionTransfer->getQuotes());

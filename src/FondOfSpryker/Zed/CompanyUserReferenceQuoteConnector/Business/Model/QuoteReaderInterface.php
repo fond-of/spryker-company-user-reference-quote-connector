@@ -8,9 +8,9 @@ use Generated\Shared\Transfer\QuoteCollectionTransfer;
 interface QuoteReaderInterface
 {
     /**
-     * @param string[] $companyUserReferences
+     * @param array<string> $companyUserReferences
      *
-     * @return int[]
+     * @return array<int>
      */
     public function findQuoteIdsByCompanyUserReferences(array $companyUserReferences): array;
 

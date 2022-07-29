@@ -5,9 +5,9 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Persistence;
 interface CompanyUserReferenceQuoteConnectorRepositoryInterface
 {
     /**
-     * @param string[] $companyUserReferences
+     * @param array<string> $companyUserReferences
      *
-     * @return int[]
+     * @return array<int>
      */
     public function findQuoteIdsByCompanyUserReferences(array $companyUserReferences): array;
 }
