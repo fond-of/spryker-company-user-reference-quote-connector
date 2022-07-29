@@ -6,6 +6,7 @@ use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Persistence\CompanyUserReferenceQuoteConnectorRepository;
 use Generated\Shared\Transfer\CompanyUserReferenceCollectionTransfer;
+use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 use Generated\Shared\Transfer\QuoteCriteriaFilterTransfer;
 
@@ -14,7 +15,7 @@ class QuoteReaderTest extends Unit
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Persistence\CompanyUserReferenceQuoteConnectorRepository
      */
-    protected $companyUserReferenceQuoteConnectorRepositoryMock;
+    protected $repositoryMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface
@@ -42,6 +43,11 @@ class QuoteReaderTest extends Unit
     protected $quoteIds;
 
     /**
+     * @var \Generated\Shared\Transfer\CompanyUserTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $companyUserTransferMock;
+
+    /**
      * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReader
      */
     protected $quoteReader;
@@ -53,7 +59,7 @@ class QuoteReaderTest extends Unit
     {
         parent::_before();
 
-        $this->companyUserReferenceQuoteConnectorRepositoryMock = $this->getMockBuilder(CompanyUserReferenceQuoteConnectorRepository::class)
+        $this->repositoryMock = $this->getMockBuilder(CompanyUserReferenceQuoteConnectorRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -69,11 +75,15 @@ class QuoteReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->companyUserTransferMock = $this->getMockBuilder(CompanyUserTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->companyUserReferences = ['STORE--CU-1'];
         $this->quoteIds = [1, 2, 5];
 
         $this->quoteReader = new QuoteReader(
-            $this->companyUserReferenceQuoteConnectorRepositoryMock,
+            $this->repositoryMock,
             $this->quoteFacadeMock,
         );
     }
@@ -85,19 +95,19 @@ class QuoteReaderTest extends Unit
     {
         $self = $this;
 
-        $this->companyUserReferenceCollectionTransferMock->expects(self::atLeastOnce())
+        $this->companyUserReferenceCollectionTransferMock->expects(static::atLeastOnce())
             ->method('getCompanyUserReferences')
             ->willReturn($this->companyUserReferences);
 
-        $this->companyUserReferenceQuoteConnectorRepositoryMock->expects(self::atLeastOnce())
+        $this->repositoryMock->expects(static::atLeastOnce())
             ->method('findQuoteIdsByCompanyUserReferences')
             ->with($this->companyUserReferences)
             ->willReturn($this->quoteIds);
 
-        $this->quoteFacadeMock->expects(self::atLeastOnce())
+        $this->quoteFacadeMock->expects(static::atLeastOnce())
             ->method('getQuoteCollection')
             ->with(
-                self::callback(static function (QuoteCriteriaFilterTransfer $quoteCriteriaFilterTransfer) use ($self) {
+                static::callback(static function (QuoteCriteriaFilterTransfer $quoteCriteriaFilterTransfer) use ($self) {
                     return $self->quoteIds === $quoteCriteriaFilterTransfer->getQuoteIds();
                 }),
             )->willReturn($this->quoteCollectionTransferMock);
@@ -106,7 +116,7 @@ class QuoteReaderTest extends Unit
             $this->companyUserReferenceCollectionTransferMock,
         );
 
-        self::assertEquals(
+        static::assertEquals(
             $this->quoteCollectionTransferMock,
             $quoteCollectionTransfer,
         );
@@ -117,11 +127,11 @@ class QuoteReaderTest extends Unit
      */
     public function testFindQuotesByCompanyUserReferencesWithEmptyResult(): void
     {
-        $this->companyUserReferenceCollectionTransferMock->expects(self::atLeastOnce())
+        $this->companyUserReferenceCollectionTransferMock->expects(static::atLeastOnce())
             ->method('getCompanyUserReferences')
             ->willReturn($this->companyUserReferences);
 
-        $this->companyUserReferenceQuoteConnectorRepositoryMock->expects(self::atLeastOnce())
+        $this->repositoryMock->expects(static::atLeastOnce())
             ->method('findQuoteIdsByCompanyUserReferences')
             ->with($this->companyUserReferences)
             ->willReturn([]);
@@ -130,6 +140,64 @@ class QuoteReaderTest extends Unit
             $this->companyUserReferenceCollectionTransferMock,
         );
 
-        self::assertCount(0, $quoteCollectionTransfer->getQuotes());
+        static::assertCount(0, $quoteCollectionTransfer->getQuotes());
+    }
+
+    /**
+     * @return void
+     */
+    public function testFindQuotesByCompanyUser(): void
+    {
+        $companyUserReference = 'FOO--CU-1';
+        $quoteIds = [1];
+
+        $this->companyUserTransferMock->expects(static::atLeastOnce())
+            ->method('getCompanyUserReference')
+            ->willReturn($companyUserReference);
+
+        $this->repositoryMock->expects(static::atLeastOnce())
+            ->method('findQuoteIdsByCompanyUserReference')
+            ->with($companyUserReference)
+            ->willReturn($quoteIds);
+
+        $this->quoteFacadeMock->expects(static::atLeastOnce())
+            ->method('getQuoteCollection')
+            ->with(
+                static::callback(
+                    static function (QuoteCriteriaFilterTransfer $quoteCriteriaFilterTransfer) use ($quoteIds) {
+                        return $quoteIds === $quoteCriteriaFilterTransfer->getQuoteIds();
+                    },
+                ),
+            )->willReturn($this->quoteCollectionTransferMock);
+
+        static::assertEquals(
+            $this->quoteCollectionTransferMock,
+            $this->quoteReader->findByCompanyUser($this->companyUserTransferMock),
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testFindQuotesByCompanyUserWithoutCompanyUserReference(): void
+    {
+        $companyUserReference = null;
+
+        $this->companyUserTransferMock->expects(static::atLeastOnce())
+            ->method('getCompanyUserReference')
+            ->willReturn($companyUserReference);
+
+        $this->repositoryMock->expects(static::never())
+            ->method('findQuoteIdsByCompanyUserReference');
+
+        $this->quoteFacadeMock->expects(static::never())
+            ->method('getQuoteCollection');
+
+        $quoteCollectionTransfer = $this->quoteReader->findByCompanyUser($this->companyUserTransferMock);
+
+        static::assertCount(
+            0,
+            $quoteCollectionTransfer->getQuotes(),
+        );
     }
 }

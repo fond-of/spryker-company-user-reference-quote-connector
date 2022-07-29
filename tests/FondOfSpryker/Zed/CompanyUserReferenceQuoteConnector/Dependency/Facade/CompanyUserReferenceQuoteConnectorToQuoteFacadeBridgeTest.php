@@ -5,6 +5,8 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 use Generated\Shared\Transfer\QuoteCriteriaFilterTransfer;
+use Generated\Shared\Transfer\QuoteResponseTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Quote\Business\QuoteFacadeInterface;
 
 class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridgeTest extends Unit
@@ -25,9 +27,19 @@ class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridgeTest extends Unit
     protected $quoteCollectionTransferMock;
 
     /**
+     * @var \Generated\Shared\Transfer\QuoteResponseTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $quoteResponseTransferMock;
+
+    /**
+     * @var \Generated\Shared\Transfer\QuoteTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $quoteTransferMock;
+
+    /**
      * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge
      */
-    protected $companyUserReferenceQuoteConnectorToQuoteFacadeBridge;
+    protected $bridge;
 
     /**
      * @return void
@@ -48,7 +60,15 @@ class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridgeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyUserReferenceQuoteConnectorToQuoteFacadeBridge = new CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge(
+        $this->quoteTransferMock = $this->getMockBuilder(QuoteTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->quoteResponseTransferMock = $this->getMockBuilder(QuoteResponseTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->bridge = new CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge(
             $this->quoteFacadeMock,
         );
     }
@@ -65,9 +85,25 @@ class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridgeTest extends Unit
 
         self::assertEquals(
             $this->quoteCollectionTransferMock,
-            $this->companyUserReferenceQuoteConnectorToQuoteFacadeBridge->getQuoteCollection(
+            $this->bridge->getQuoteCollection(
                 $this->quoteCriteriaFilterTransferMock,
             ),
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testDeleteQuote(): void
+    {
+        $this->quoteFacadeMock->expects(self::atLeastOnce())
+            ->method('deleteQuote')
+            ->with($this->quoteTransferMock)
+            ->willReturn($this->quoteResponseTransferMock);
+
+        self::assertEquals(
+            $this->quoteResponseTransferMock,
+            $this->bridge->deleteQuote($this->quoteTransferMock),
         );
     }
 }

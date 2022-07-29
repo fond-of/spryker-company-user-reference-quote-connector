@@ -10,4 +10,11 @@ interface CompanyUserReferenceQuoteConnectorRepositoryInterface
      * @return array<int>
      */
     public function findQuoteIdsByCompanyUserReferences(array $companyUserReferences): array;
+
+    /**
+     * @param string $companyUserReference
+     *
+     * @return array<int>
+     */
+    public function findQuoteIdsByCompanyUserReference(string $companyUserReference): array;
 }

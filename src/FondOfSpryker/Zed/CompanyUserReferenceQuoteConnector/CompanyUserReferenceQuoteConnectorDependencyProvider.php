@@ -7,6 +7,9 @@ use Orm\Zed\Quote\Persistence\SpyQuoteQuery;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CompanyUserReferenceQuoteConnectorDependencyProvider extends AbstractBundleDependencyProvider
 {
     /**

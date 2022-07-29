@@ -7,6 +7,8 @@ use Orm\Zed\Quote\Persistence\SpyQuoteQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
+ * @codeCoverageIgnore
+ *
  * @method \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Persistence\CompanyUserReferenceQuoteConnectorRepositoryInterface getRepository()
  */
 class CompanyUserReferenceQuoteConnectorPersistenceFactory extends AbstractPersistenceFactory

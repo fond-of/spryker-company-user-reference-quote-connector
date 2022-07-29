@@ -2,6 +2,8 @@
 
 namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Deleter\QuoteDeleter;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Deleter\QuoteDeleterInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReader;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReaderInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\CompanyUserReferenceQuoteConnectorDependencyProvider;
@@ -20,6 +22,17 @@ class CompanyUserReferenceQuoteConnectorBusinessFactory extends AbstractBusiness
     {
         return new QuoteReader(
             $this->getRepository(),
+            $this->getQuoteFacade(),
+        );
+    }
+
+    /**
+     * @return \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Deleter\QuoteDeleterInterface
+     */
+    public function createQuoteDeleter(): QuoteDeleterInterface
+    {
+        return new QuoteDeleter(
+            $this->createQuoteReader(),
             $this->getQuoteFacade(),
         );
     }
