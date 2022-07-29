@@ -88,6 +88,7 @@ class QuoteReader implements QuoteReaderInterface
 
     /**
      * @param array $quoteIds
+     *
      * @return \Generated\Shared\Transfer\QuoteCollectionTransfer
      */
     protected function findByQuoteIds(array $quoteIds): QuoteCollectionTransfer

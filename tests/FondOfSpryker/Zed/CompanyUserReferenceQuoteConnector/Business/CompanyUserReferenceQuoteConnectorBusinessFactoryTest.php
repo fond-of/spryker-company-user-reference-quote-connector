@@ -91,7 +91,7 @@ class CompanyUserReferenceQuoteConnectorBusinessFactoryTest extends Unit
 
         static::assertInstanceOf(
             QuoteDeleter::class,
-            $this->factory->createQuoteDeleter()
+            $this->factory->createQuoteDeleter(),
         );
     }
 }

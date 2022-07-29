@@ -12,10 +12,12 @@ class QuoteCompanyUserPreDeletePluginTest extends Unit
      * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\CompanyUserReferenceQuoteConnectorFacade|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $facadeMock;
+
     /**
      * @var \Generated\Shared\Transfer\CompanyUserTransfer|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $companyUserTransferMock;
+
     /**
      * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Communication\Plugin\CompanyUserExtension\QuoteCompanyUserPreDeletePlugin
      */

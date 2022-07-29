@@ -6,7 +6,6 @@ use ArrayObject;
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReaderInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface;
-use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Persistence\CompanyUserReferenceQuoteConnectorRepositoryInterface;
 use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -73,6 +72,9 @@ class QuoteDeleterTest extends Unit
         $this->quoteDeleter = new QuoteDeleter($this->quoteReaderMock, $this->quoteFacadeMock);
     }
 
+    /**
+     * @return void
+     */
     public function testDeleteByCompanyUser(): void
     {
         $this->quoteReaderMock->expects(static::atLeastOnce())

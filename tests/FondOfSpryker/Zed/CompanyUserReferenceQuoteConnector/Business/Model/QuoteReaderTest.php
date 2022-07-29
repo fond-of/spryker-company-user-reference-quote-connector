@@ -166,13 +166,13 @@ class QuoteReaderTest extends Unit
                 static::callback(
                     static function (QuoteCriteriaFilterTransfer $quoteCriteriaFilterTransfer) use ($quoteIds) {
                         return $quoteIds === $quoteCriteriaFilterTransfer->getQuoteIds();
-                    }
-                )
+                    },
+                ),
             )->willReturn($this->quoteCollectionTransferMock);
 
         static::assertEquals(
             $this->quoteCollectionTransferMock,
-            $this->quoteReader->findByCompanyUser($this->companyUserTransferMock)
+            $this->quoteReader->findByCompanyUser($this->companyUserTransferMock),
         );
     }
 
