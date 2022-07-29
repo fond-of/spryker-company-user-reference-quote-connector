@@ -5,9 +5,9 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector;
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge;
 use Spryker\Shared\Kernel\BundleProxy;
+use Spryker\Zed\Kernel\Container;
 use Spryker\Zed\Kernel\Locator;
 use Spryker\Zed\Quote\Business\QuoteFacadeInterface;
-use Spryker\Zed\Testify\Locator\Business\Container;
 
 class CompanyUserReferenceQuoteConnectorDependencyProviderTest extends Unit
 {
@@ -32,7 +32,7 @@ class CompanyUserReferenceQuoteConnectorDependencyProviderTest extends Unit
     protected $quoteFacadeMock;
 
     /**
-     * @var \FondOfSpryker\Zed\CompanyBusinessUnitSales\CompanyBusinessUnitSalesDependencyProvider
+     * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\CompanyUserReferenceQuoteConnectorDependencyProvider
      */
     protected $companyUserReferenceQuoteConnectorDependencyProvider;
 
