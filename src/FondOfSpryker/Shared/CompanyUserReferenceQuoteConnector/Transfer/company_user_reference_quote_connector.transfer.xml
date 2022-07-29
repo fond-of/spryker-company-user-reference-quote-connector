@@ -15,7 +15,7 @@
     </transfer>
 
     <transfer name="QuoteCriteriaFilter">
-        <property name="quoteIds" type="int[]" singular="quoteId"/>
+        <property name="quoteIds" type="int[]"/>
     </transfer>
 
     <transfer name="Quote">
