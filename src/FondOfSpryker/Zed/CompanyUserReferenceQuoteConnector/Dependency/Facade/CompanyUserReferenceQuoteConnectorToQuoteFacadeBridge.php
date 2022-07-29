@@ -4,6 +4,8 @@ namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade
 
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 use Generated\Shared\Transfer\QuoteCriteriaFilterTransfer;
+use Generated\Shared\Transfer\QuoteResponseTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Quote\Business\QuoteFacadeInterface;
 
 class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge implements
@@ -30,5 +32,15 @@ class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge implements
     public function getQuoteCollection(QuoteCriteriaFilterTransfer $quoteCriteriaFilterTransfer): QuoteCollectionTransfer
     {
         return $this->quoteFacade->getQuoteCollection($quoteCriteriaFilterTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteResponseTransfer
+     */
+    public function deleteQuote(QuoteTransfer $quoteTransfer): QuoteResponseTransfer
+    {
+        return $this->quoteFacade->deleteQuote($quoteTransfer);
     }
 }

@@ -3,8 +3,10 @@
 namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Deleter\QuoteDeleterInterface;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReaderInterface;
 use Generated\Shared\Transfer\CompanyUserReferenceCollectionTransfer;
+use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 
 class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
@@ -12,7 +14,7 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\CompanyUserReferenceQuoteConnectorBusinessFactory
      */
-    protected $companyUserReferenceQuoteConnectorBusinessFactoryMock;
+    protected $factoryMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReaderInterface
@@ -30,9 +32,19 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
     protected $companyUserReferenceCollectionTransferMock;
 
     /**
+     * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Deleter\QuoteDeleterInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $quoteDeleterMock;
+
+    /**
+     * @var \Generated\Shared\Transfer\CompanyUserTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $companyUserTransferMock;
+
+    /**
      * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\CompanyUserReferenceQuoteConnectorFacade
      */
-    protected $companyUserReferenceQuoteConnectorFacade;
+    protected $facade;
 
     /**
      * @return void
@@ -41,7 +53,7 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
     {
         parent::_before();
 
-        $this->companyUserReferenceQuoteConnectorBusinessFactoryMock = $this->getMockBuilder(CompanyUserReferenceQuoteConnectorBusinessFactory::class)
+        $this->factoryMock = $this->getMockBuilder(CompanyUserReferenceQuoteConnectorBusinessFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -57,9 +69,17 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyUserReferenceQuoteConnectorFacade = new CompanyUserReferenceQuoteConnectorFacade();
-        $this->companyUserReferenceQuoteConnectorFacade->setFactory(
-            $this->companyUserReferenceQuoteConnectorBusinessFactoryMock,
+        $this->quoteDeleterMock = $this->getMockBuilder(QuoteDeleterInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->companyUserTransferMock = $this->getMockBuilder(CompanyUserTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->facade = new CompanyUserReferenceQuoteConnectorFacade();
+        $this->facade->setFactory(
+            $this->factoryMock,
         );
     }
 
@@ -68,20 +88,36 @@ class CompanyUserReferenceQuoteConnectorFacadeTest extends Unit
      */
     public function testFindQuotesByCompanyUserReferences(): void
     {
-        $this->companyUserReferenceQuoteConnectorBusinessFactoryMock->expects(self::atLeastOnce())
+        $this->factoryMock->expects(static::atLeastOnce())
             ->method('createQuoteReader')
             ->willReturn($this->quoteReaderMock);
 
-        $this->quoteReaderMock->expects(self::atLeastOnce())
+        $this->quoteReaderMock->expects(static::atLeastOnce())
             ->method('findQuotesByCompanyUserReferences')
             ->with($this->companyUserReferenceCollectionTransferMock)
             ->willReturn($this->quoteCollectionTransferMock);
 
-        self::assertEquals(
+        static::assertEquals(
             $this->quoteCollectionTransferMock,
-            $this->companyUserReferenceQuoteConnectorFacade->findQuotesByCompanyUserReferences(
+            $this->facade->findQuotesByCompanyUserReferences(
                 $this->companyUserReferenceCollectionTransferMock,
             ),
         );
+    }
+
+    /**
+     * @return void
+     */
+    public function testDeleteQuotesByCompanyUser(): void
+    {
+        $this->factoryMock->expects(static::atLeastOnce())
+            ->method('createQuoteDeleter')
+            ->willReturn($this->quoteDeleterMock);
+
+        $this->quoteDeleterMock->expects(static::atLeastOnce())
+            ->method('deleteByCompanyUser')
+            ->with($this->companyUserTransferMock);
+
+        $this->facade->deleteQuotesByCompanyUser($this->companyUserTransferMock);
     }
 }

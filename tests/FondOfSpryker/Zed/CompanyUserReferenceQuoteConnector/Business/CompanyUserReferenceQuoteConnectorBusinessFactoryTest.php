@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
 use Codeception\Test\Unit;
+use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Deleter\QuoteDeleter;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\Model\QuoteReader;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\CompanyUserReferenceQuoteConnectorDependencyProvider;
 use FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeInterface;
@@ -29,7 +30,7 @@ class CompanyUserReferenceQuoteConnectorBusinessFactoryTest extends Unit
     /**
      * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business\CompanyUserReferenceQuoteConnectorBusinessFactory
      */
-    protected $companyUserReferenceQuoteConnectorBusinessFactory;
+    protected $factory;
 
     /**
      * @return void
@@ -50,9 +51,9 @@ class CompanyUserReferenceQuoteConnectorBusinessFactoryTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyUserReferenceQuoteConnectorBusinessFactory = new CompanyUserReferenceQuoteConnectorBusinessFactory();
-        $this->companyUserReferenceQuoteConnectorBusinessFactory->setContainer($this->containerMock);
-        $this->companyUserReferenceQuoteConnectorBusinessFactory->setRepository($this->repositoryMock);
+        $this->factory = new CompanyUserReferenceQuoteConnectorBusinessFactory();
+        $this->factory->setContainer($this->containerMock);
+        $this->factory->setRepository($this->repositoryMock);
     }
 
     /**
@@ -60,17 +61,37 @@ class CompanyUserReferenceQuoteConnectorBusinessFactoryTest extends Unit
      */
     public function testCreateQuoteReader(): void
     {
-        $this->containerMock->expects(self::atLeastOnce())
+        $this->containerMock->expects(static::atLeastOnce())
             ->method('has')
             ->willReturn(true);
 
-        $this->containerMock->expects(self::atLeastOnce())
+        $this->containerMock->expects(static::atLeastOnce())
             ->method('get')
             ->with(CompanyUserReferenceQuoteConnectorDependencyProvider::FACADE_QUOTE)
             ->willReturn($this->quoteFacadeMock);
 
-        $quoteReader = $this->companyUserReferenceQuoteConnectorBusinessFactory->createQuoteReader();
+        $quoteReader = $this->factory->createQuoteReader();
 
-        self::assertInstanceOf(QuoteReader::class, $quoteReader);
+        static::assertInstanceOf(QuoteReader::class, $quoteReader);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateQuoteDeleter(): void
+    {
+        $this->containerMock->expects(static::atLeastOnce())
+            ->method('has')
+            ->willReturn(true);
+
+        $this->containerMock->expects(static::atLeastOnce())
+            ->method('get')
+            ->with(CompanyUserReferenceQuoteConnectorDependencyProvider::FACADE_QUOTE)
+            ->willReturn($this->quoteFacadeMock);
+
+        static::assertInstanceOf(
+            QuoteDeleter::class,
+            $this->factory->createQuoteDeleter()
+        );
     }
 }

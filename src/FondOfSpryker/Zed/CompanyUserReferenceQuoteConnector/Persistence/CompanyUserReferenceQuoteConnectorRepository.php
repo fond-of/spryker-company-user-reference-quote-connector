@@ -6,6 +6,8 @@ use Orm\Zed\Quote\Persistence\Map\SpyQuoteTableMap;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 
 /**
+ * @codeCoverageIgnore
+ *
  * @method \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Persistence\CompanyUserReferenceQuoteConnectorPersistenceFactory getFactory()
  */
 class CompanyUserReferenceQuoteConnectorRepository extends AbstractRepository implements CompanyUserReferenceQuoteConnectorRepositoryInterface
@@ -24,6 +26,21 @@ class CompanyUserReferenceQuoteConnectorRepository extends AbstractRepository im
         return $this->getFactory()->getQuoteQuery()
             ->clear()
             ->filterByCompanyUserReference_In($companyUserReferences)
+            ->select([SpyQuoteTableMap::COL_ID_QUOTE])
+            ->find()
+            ->toArray();
+    }
+
+    /**
+     * @param string $companyUserReference
+     *
+     * @return array<int>
+     */
+    public function findQuoteIdsByCompanyUserReference(string $companyUserReference): array
+    {
+        return $this->getFactory()->getQuoteQuery()
+            ->clear()
+            ->filterByCompanyUserReference($companyUserReference)
             ->select([SpyQuoteTableMap::COL_ID_QUOTE])
             ->find()
             ->toArray();

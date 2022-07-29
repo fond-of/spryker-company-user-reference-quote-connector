@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Business;
 
 use Generated\Shared\Transfer\CompanyUserReferenceCollectionTransfer;
+use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteCollectionTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -23,5 +24,15 @@ class CompanyUserReferenceQuoteConnectorFacade extends AbstractFacade implements
         return $this->getFactory()
             ->createQuoteReader()
             ->findQuotesByCompanyUserReferences($companyUserReferenceCollectionTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
+     *
+     * @return void
+     */
+    public function deleteQuotesByCompanyUser(CompanyUserTransfer $companyUserTransfer): void
+    {
+        $this->getFactory()->createQuoteDeleter()->deleteByCompanyUser($companyUserTransfer);
     }
 }
