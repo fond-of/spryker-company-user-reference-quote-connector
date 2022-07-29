@@ -11,9 +11,9 @@ use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 class CompanyUserReferenceQuoteConnectorRepository extends AbstractRepository implements CompanyUserReferenceQuoteConnectorRepositoryInterface
 {
     /**
-     * @param string[] $companyUserReferences
+     * @param array<string> $companyUserReferences
      *
-     * @return int[]
+     * @return array<int>
      */
     public function findQuoteIdsByCompanyUserReferences(array $companyUserReferences): array
     {

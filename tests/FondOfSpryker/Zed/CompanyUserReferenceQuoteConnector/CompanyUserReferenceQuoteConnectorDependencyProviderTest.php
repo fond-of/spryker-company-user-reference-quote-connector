@@ -82,14 +82,14 @@ class CompanyUserReferenceQuoteConnectorDependencyProviderTest extends Unit
             ->willReturn($this->quoteFacadeMock);
 
         $container = $this->companyUserReferenceQuoteConnectorDependencyProvider->provideBusinessLayerDependencies(
-            $this->containerMock
+            $this->containerMock,
         );
 
         self::assertEquals($this->containerMock, $container);
 
         self::assertInstanceOf(
             CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge::class,
-            $container[CompanyUserReferenceQuoteConnectorDependencyProvider::FACADE_QUOTE]
+            $container[CompanyUserReferenceQuoteConnectorDependencyProvider::FACADE_QUOTE],
         );
     }
 }

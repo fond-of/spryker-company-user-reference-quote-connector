@@ -17,7 +17,7 @@ class CompanyUserReferenceQuoteConnectorPersistenceFactory extends AbstractPersi
     public function getQuoteQuery(): SpyQuoteQuery
     {
         return $this->getProvidedDependency(
-            CompanyUserReferenceQuoteConnectorDependencyProvider::PROPEL_QUERY_QUOTE
+            CompanyUserReferenceQuoteConnectorDependencyProvider::PROPEL_QUERY_QUOTE,
         );
     }
 }

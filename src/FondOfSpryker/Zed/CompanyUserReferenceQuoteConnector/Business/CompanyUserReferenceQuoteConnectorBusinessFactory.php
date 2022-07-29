@@ -20,7 +20,7 @@ class CompanyUserReferenceQuoteConnectorBusinessFactory extends AbstractBusiness
     {
         return new QuoteReader(
             $this->getRepository(),
-            $this->getQuoteFacade()
+            $this->getQuoteFacade(),
         );
     }
 

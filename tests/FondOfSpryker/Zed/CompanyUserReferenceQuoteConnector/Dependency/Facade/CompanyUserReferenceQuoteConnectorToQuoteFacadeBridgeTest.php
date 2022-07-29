@@ -25,7 +25,7 @@ class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridgeTest extends Unit
     protected $quoteCollectionTransferMock;
 
     /**
-     * @var CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge
+     * @var \FondOfSpryker\Zed\CompanyUserReferenceQuoteConnector\Dependency\Facade\CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge
      */
     protected $companyUserReferenceQuoteConnectorToQuoteFacadeBridge;
 
@@ -49,7 +49,7 @@ class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridgeTest extends Unit
             ->getMock();
 
         $this->companyUserReferenceQuoteConnectorToQuoteFacadeBridge = new CompanyUserReferenceQuoteConnectorToQuoteFacadeBridge(
-            $this->quoteFacadeMock
+            $this->quoteFacadeMock,
         );
     }
 
@@ -66,8 +66,8 @@ class CompanyUserReferenceQuoteConnectorToQuoteFacadeBridgeTest extends Unit
         self::assertEquals(
             $this->quoteCollectionTransferMock,
             $this->companyUserReferenceQuoteConnectorToQuoteFacadeBridge->getQuoteCollection(
-                $this->quoteCriteriaFilterTransferMock
-            )
+                $this->quoteCriteriaFilterTransferMock,
+            ),
         );
     }
 }
