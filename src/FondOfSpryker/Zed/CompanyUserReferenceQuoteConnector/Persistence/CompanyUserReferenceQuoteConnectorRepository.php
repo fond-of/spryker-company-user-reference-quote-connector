@@ -23,12 +23,14 @@ class CompanyUserReferenceQuoteConnectorRepository extends AbstractRepository im
             return [];
         }
 
-        return $this->getFactory()->getQuoteQuery()
+        /** @var \Propel\Runtime\Collection\ArrayCollection $collection */
+        $collection = $this->getFactory()->getQuoteQuery()
             ->clear()
             ->filterByCompanyUserReference_In($companyUserReferences)
             ->select([SpyQuoteTableMap::COL_ID_QUOTE])
-            ->find()
-            ->toArray();
+            ->find();
+
+        return $collection->toArray();
     }
 
     /**
@@ -38,11 +40,13 @@ class CompanyUserReferenceQuoteConnectorRepository extends AbstractRepository im
      */
     public function findQuoteIdsByCompanyUserReference(string $companyUserReference): array
     {
-        return $this->getFactory()->getQuoteQuery()
+        /** @var \Propel\Runtime\Collection\ArrayCollection $collection */
+        $collection = $this->getFactory()->getQuoteQuery()
             ->clear()
             ->filterByCompanyUserReference($companyUserReference)
             ->select([SpyQuoteTableMap::COL_ID_QUOTE])
-            ->find()
-            ->toArray();
+            ->find();
+
+        return $collection->toArray();
     }
 }
